@@ -7,11 +7,12 @@ import subprocess
 import sys
 import validators.url
 import threading
+import urllib.request
 from typing import Optional
 
 from lib.utils import *
 
-from PySide6.QtGui import QAction, QCursor
+from PySide6.QtGui import QAction, QCursor, QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QDialog, QLayout,\
     QSizePolicy, QSpacerItem, QMenu, QDialogButtonBox
 from PySide6 import QtCore
@@ -25,10 +26,10 @@ from lib.ui.ui_delete import Ui_DeleteDialog
 from lib.ui.flowlayout import FlowLayout
 
 if os.name == 'nt':
-	import ctypes
+    import ctypes
 
-	appid = 'lugli-maccaferri.qbic-desktop.1.0.0'
-	ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
+    appid = 'lugli-maccaferri.qbic-desktop.1.0.0'
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
 
 
 class LoginWindow(QMainWindow):
@@ -115,9 +116,11 @@ class MCServerWidget(QWidget, Ui_MCServer_Widget):
     def __init__(self, name, sid, parent=None):
         super(MCServerWidget, self).__init__(parent)
         self.setupUi(self)
+
         self.name = name
         self.id = sid
         self.menu: Optional[QMenu] = None
+        self.icon_set = False
 
     def contextMenuEvent(self, event):
         self.menu = QMenu(self)
@@ -143,6 +146,17 @@ class MCServerWidget(QWidget, Ui_MCServer_Widget):
     def open_delete_dialog(self, name, sid):
         d = DeleteDialog(name, sid)
         d.exec()
+
+    def load_icon_from_url(self, url):
+        self.icon_set = True
+        try:
+            data = urllib.request.urlopen(url).read()
+            pixmap = QPixmap()
+            pixmap.loadFromData(data)
+            self.picture_label.setPixmap(pixmap)
+        except Exception as e:
+            print("Error while loading server icon from url \"" + url + "\"")
+            print("\t" + str(e))
 
 
 class QbicServerWidget(QWidget, Ui_QbicServer_Widget):
@@ -183,7 +197,6 @@ class DeleteDialog(QDialog, Ui_DeleteDialog):
 
         # t = threading.Timer(5.0, load_mcservers_ui, (None, current_qbic_name, current_qbic_host))
         # t.start()
-
 
 
 class JFlowLayout(FlowLayout):
@@ -267,7 +280,14 @@ def load_mc_server_info(name, host, sid):
 
         qbic_windows[name].ui.server_widgets[sid].version_info_label.setText(data["version"])
         qbic_windows[name].ui.server_widgets[sid].player_count_info_label.setText(str(data["online_players"])
-                                                                                  + "/" + str(data["max_players"]))
+                                                                                 + "/" + str(data["max_players"]))
+
+        try:
+            if not qbic_windows[name].ui.server_widgets[sid].icon_set:
+                qbic_windows[name].ui.server_widgets[sid].load_icon_from_url(current_qbic_host.rstrip("/")
+                                                                             + "/" + data["server_icon"].lstrip("/"))
+        except Exception:
+            return
 
     except Exception as e:
         if "500" in str(e):
