@@ -1,7 +1,7 @@
 # qbic-desktop
 Desktop client for qbic, written in Python
 
-## Setup
+### Setup
 ```
 pip install -r requirements.txt
 ```
