@@ -18,10 +18,11 @@ from ui.ui_mcservermanagement import Ui_MCServerManagementWindow
 from ui.ui_serverfiles import Ui_ServerFilesWindow
 from ui.ui_fileedit import Ui_FileEditWindow
 
-import ctypes
+if os.name == 'nt':
+    import ctypes
 
-appid = 'lugli-maccaferri.qbic-desktop.1.0.0'
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
+    appid = 'lugli-maccaferri.qbic-desktop.1.0.0'
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
 
 
 class MainWindow(QMainWindow):
