@@ -24,10 +24,11 @@ from lib.ui.ui_create import Ui_CreateWindow
 from lib.ui.ui_delete import Ui_DeleteDialog
 from lib.ui.flowlayout import FlowLayout
 
-import ctypes
+if os.name == 'nt':
+	import ctypes
 
-appid = 'lugli-maccaferri.qbic-desktop.1.0.0'
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
+	appid = 'lugli-maccaferri.qbic-desktop.1.0.0'
+	ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
 
 
 class LoginWindow(QMainWindow):
