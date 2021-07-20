@@ -5,17 +5,23 @@
 import concurrent.futures
 import subprocess
 import sys
+import os
 import validators.url
 import threading
 import urllib.request
 from typing import Optional
 
-from lib.utils import *
-
 from PySide6.QtGui import QAction, QCursor, QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QDialog, QLayout,\
     QSizePolicy, QSpacerItem, QMenu, QDialogButtonBox
 from PySide6 import QtCore
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+sys.path.append(dname)
+
+from lib.utils import *
 
 from lib.ui.ui_login import Ui_LoginWindow
 from lib.ui.ui_mcservers import Ui_MCServers_Window
@@ -610,10 +616,6 @@ def load_mcserver_management_ui(name, host, sid):
 
 
 if __name__ == "__main__":
-    abspath = os.path.abspath(__file__)
-    dname = os.path.dirname(abspath)
-    os.chdir(dname)
-
     recent_filename = "data/recent.list"
 
     window: Optional[LoginWindow] = None

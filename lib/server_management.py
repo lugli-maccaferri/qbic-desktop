@@ -3,6 +3,7 @@
 
 import concurrent.futures
 import sys
+import os
 import threading
 import base64
 import asyncio
@@ -10,10 +11,16 @@ import websockets
 import time
 from typing import Optional
 
-from utils import *
-
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6 import QtCore
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+sys.path.append(dname)
+
+from utils import *
+
 from ui.ui_mcservermanagement import Ui_MCServerManagementWindow
 from ui.ui_serverfiles import Ui_ServerFilesWindow
 from ui.ui_fileedit import Ui_FileEditWindow
@@ -432,10 +439,6 @@ def save_edited_file():
 
 
 if __name__ == "__main__":
-    abspath = os.path.abspath(__file__)
-    dname = os.path.dirname(abspath)
-    os.chdir(dname)
-
     window: Optional[MainWindow] = None
     files_window: Optional[ServerFilesWindow] = None
     edit_window: Optional[FileEditWindow] = None
