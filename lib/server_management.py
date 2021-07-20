@@ -277,7 +277,7 @@ def load_management_ui():
         infoloader_f(infoloader)
 
     loop = asyncio.get_event_loop()
-    t = threading.Thread(target=loop_in_thread, args=(loop,))
+    t = threading.Thread(target=loop_in_thread, args=(loop,), daemon=True)
     t.start()
 
     window.ui.start_server_button.clicked.connect(start_server)
