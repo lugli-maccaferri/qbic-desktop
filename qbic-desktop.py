@@ -596,9 +596,17 @@ def load_delete_mcserver_ui(sid):
 
 def load_mcserver_management_ui(name, host, sid):
     global server_management_processes
-    server_management_processes[name + "-" + sid] = subprocess.Popen('python lib/server_management.py '
-                                                                     + host + ' ' + sid + ' '
-                                                                     + token + ' \"' + name + '\"', shell=True)
+
+    try:
+        subprocess.call(["python3", "--version"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        server_management_processes[name + "-" + sid] = subprocess.Popen('python3 lib/server_management.py '
+                                                                         + host + ' ' + sid + ' '
+                                                                         + token + ' \"' + name + '\"', shell=True)
+    except FileNotFoundError:
+        subprocess.call(["python", "--version"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        server_management_processes[name + "-" + sid] = subprocess.Popen('python lib/server_management.py '
+                                                                         + host + ' ' + sid + ' '
+                                                                         + token + ' \"' + name + '\"', shell=True)
 
 
 if __name__ == "__main__":
