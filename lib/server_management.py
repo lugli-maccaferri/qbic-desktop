@@ -15,15 +15,15 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6 import QtCore
 
 abspath = os.path.abspath(__file__)
-dname = os.path.dirname(abspath)
+dname = os.path.dirname(abspath).rstrip("\lib").rstrip("/lib")
 os.chdir(dname)
 sys.path.append(dname)
 
-from utils import *
+from lib.utils import *
 
-from ui.ui_mcservermanagement import Ui_MCServerManagementWindow
-from ui.ui_serverfiles import Ui_ServerFilesWindow
-from ui.ui_fileedit import Ui_FileEditWindow
+from lib.ui.ui_mcservermanagement import Ui_MCServerManagementWindow
+from lib.ui.ui_serverfiles import Ui_ServerFilesWindow
+from lib.ui.ui_fileedit import Ui_FileEditWindow
 
 if os.name == 'nt':
     import ctypes
