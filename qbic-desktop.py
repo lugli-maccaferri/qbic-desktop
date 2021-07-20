@@ -610,6 +610,10 @@ def load_mcserver_management_ui(name, host, sid):
 
 
 if __name__ == "__main__":
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
     recent_filename = "data/recent.list"
 
     window: Optional[LoginWindow] = None

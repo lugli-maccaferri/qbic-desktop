@@ -432,6 +432,10 @@ def save_edited_file():
 
 
 if __name__ == "__main__":
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
     window: Optional[MainWindow] = None
     files_window: Optional[ServerFilesWindow] = None
     edit_window: Optional[FileEditWindow] = None
